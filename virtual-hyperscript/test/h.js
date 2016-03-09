@@ -112,27 +112,13 @@ test("h with undefined", function (assert) {
 })
 
 test("h with foreign object", function (assert) {
-    var errorSingleChild
+    var node = h("div", null, { foreign: "object" })
+    assert.equal(node.children.length, 1);
+    assert.equal(node.children[0].text, '{"foreign":"object"}');
 
-    try {
-        h("div", null, { foreign: "object" })
-    } catch (e) {
-        errorSingleChild = e
-    }
-
-    var errorChildren
-
-    try {
-        h("div", [{ foreign: "object" }])
-    } catch (e) {
-        errorChildren = e
-    }
-
-    assert.ok(errorSingleChild);
-    assert.ok(/Unexpected virtual child/.test(errorSingleChild.message))
-
-    assert.ok(errorChildren);
-    assert.ok(/Unexpected virtual child/.test(errorChildren.message))
+    node = h("div", [{ foreign: "object" }])
+    assert.equal(node.children.length, 1);
+    assert.equal(node.children[0].text, '{"foreign":"object"}');
 
     assert.end()
 })
